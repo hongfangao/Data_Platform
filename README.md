@@ -40,6 +40,9 @@ Then execute the following commands:
 julia -p 6 mapmatch.jl --inputpath ../data/h5path --outputpath ../data/jldpath
 ```
 where `6` is the number of cpu cores available in your machine. The map matching results are stored in `Data_Platform/data/jldpath`.
+
+Once the map matching process is finished, you should get 5 `jld2` files.
+(`trips_150103.jld2` to `trips_150107.jld2`).
 ## References:
 [Learning Travel Time Distributions with Deep Generative Model](http://www.ntu.edu.sg/home/lixiucheng/pdfs/www19-deepgtt.pdf) (**WWW-19**)
 
