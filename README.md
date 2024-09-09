@@ -50,3 +50,4 @@ where `6` is the number of cpu cores available in your machine. The map matching
 - The overall map matching process may take very long time, please be patient.
 - The cloud server IP will be provided in the class.
 - Database IP, Database Name, user and password will be provided in the class.
+- **DO NOT** use ECNU campus network while connecting to the database and mapmatching server.
