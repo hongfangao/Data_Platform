@@ -10,10 +10,15 @@ mutable struct Trip{T<:AbstractFloat}
     tms::Vector{T}
     devid
     roads
+    time
+    frac
+    route
+    route_heading
+    route_geom
 end
 
-Trip(lon, lat, tms) = Trip(lon, lat, tms, 0, nothing)
-Trip(lon, lat, tms, devid) = Trip(lon, lat, tms, devid, nothing)
+Trip(lon, lat, tms) = Trip(lon, lat, tms, 0, nothing, nothing, nothing, nothing, nothing, nothing)
+Trip(lon, lat, tms, devid) = Trip(lon, lat, tms, devid, nothing, nothing, nothing, nothing, nothing, nothing)
 
 function Base.show(io::IO, t::Trip)
     print(io, "Trip: $(length(t.lon)) points")
@@ -193,13 +198,22 @@ function matchtrip(trip::Trip)
     """
     #js = trip2finetrip(trip, 200) |> removeredundantpoints |> trip2json
     js = trip |> removeredundantpoints |> trip2json
-    request = Dict("format"=>"slimjson", "request"=>js) |> JSON.json
-    clientside = connect("localhost", 1234)
+    request = Dict("format"=>"mapmatch", "request"=>js) |> JSON.json
+    clientside = connect("106.75.3.204", 1234)
     try
         message = request * "\n"
         write(clientside, message)
+        # response = readline(clientside)
+        # response == "SUCCESS" ? readline(clientside) |> JSON.parse : []
         response = readline(clientside)
-        response == "SUCCESS" ? readline(clientside) |> JSON.parse : []
+        if response == "SUCCESS"
+            tmp = readline(clientside)
+            # println(tmp)
+            result = readline(clientside) |> JSON.parse
+            # println(result)
+        else
+            result = []
+        end
     finally
         close(clientside)
     end
@@ -212,4 +226,35 @@ function trip2roads(trip::Trip)
     result = matchtrip(trip)
     roads, _ = map(d->get(d, "road", -1), result) |> rle
     roads
+end
+
+function trip2detailtrips(trip::Trip)
+    """
+    mapping a trip to road segments, timestamp and fraction
+    """
+    result = matchtrip(trip)
+    time = map(d->get(d, "time", -1), result)
+    frac = map(d->get(d, "frac", -1), result)
+    roads = map(d->get(d, "road", -1), result)
+    heading = map(d->get(d, "heading", ""), result)
+    route_geom = map(d->get(d, "route_geom", ""), result)
+
+    routes = map(d->get(d, "route", nothing), result)
+
+    route_geom = route_geom[route_geom .!= "", :]
+    routes = routes[routes .!= nothing, :]
+
+    route = []
+    for i = 1:length(routes)
+        append!(route, get(routes[i], "roads", []))
+    end
+    route, _ = rle(route)
+
+    route_heading = map(d->get(d, "heading", ""), route)
+    route = map(d->get(d, "road", -1), route)
+    # println(time)
+    # println(frac)
+    # println(roads)
+    # println(route_geom)
+    return roads, time, frac, route, route_heading, route_geom
 end
