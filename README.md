@@ -90,9 +90,9 @@ clientside = connect("IP_address", 1234)
 ```
 Then execute the following commands:
 ```bash
-julia -p 6 mapmatch.jl --inputpath ../data/h5path --outputpath ../data/jldpath
+julia -p 1 mapmatch.jl --inputpath ../data/h5path --outputpath ../data/jldpath
 ```
-where `6` is the number of cpu cores available in your machine. The map matching results are stored in `Data_Platform/data/jldpath`.
+where `1` is the number of cpu cores available in your machine. The map matching results are stored in `Data_Platform/data/jldpath`.
 
 Once the map matching process is finished, you should get 5 `jld2` files.
 (`trips_150103.jld2` to `trips_150107.jld2`).
