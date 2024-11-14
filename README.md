@@ -24,7 +24,7 @@ The map of Harbin has been implemented using [OSM](https://www.openstreetmap.org
 
 ### Map matching
 
-**If you want to build your own mapmatching server, please following the below steps to build a mapmatching server:**
+**(Recommended) If you want to build your own mapmatching server, please following the below steps to build a mapmatching server:**
 
 **Requirements**:
 
