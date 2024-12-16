@@ -41,7 +41,8 @@ function readtripsh5(tripfile::String)
             lon = read(f["/trip/$i/lon"])
             lat = read(f["/trip/$i/lat"])
             tms = read(f["/trip/$i/tms"])
-            trip = Trip(lon, lat, tms)
+            devid = read(f["/trip/$i/devid"])
+            trip = Trip(lon, lat, tms, devid)
             push!(trips, trip)
             #i >= 10000 && break
         end
@@ -199,7 +200,7 @@ function matchtrip(trip::Trip)
     #js = trip2finetrip(trip, 200) |> removeredundantpoints |> trip2json
     js = trip |> removeredundantpoints |> trip2json
     request = Dict("format"=>"mapmatch", "request"=>js) |> JSON.json
-    clientside = connect("106.75.3.204", 1234)
+    clientside = connect("localhost", 1234)
     try
         message = request * "\n"
         write(clientside, message)
