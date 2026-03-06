@@ -90,7 +90,7 @@ service postgresql start
    ```
 2. upload the `harbin.osm.pbf` to `barefoot/map/osm`
 3. rename the `barefoot` directory to `barefoot_map`
-4. clone the modified codes in anthoer directory
+4. clone the modified codes in **another** directory
    ```bash
    git clone https://github.com/hujilin1229/barefoot.git
    cd barefoot
