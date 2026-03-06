@@ -21,7 +21,53 @@ Download the [dataset](https://pan.quark.cn/s/b30e6b7cd379) and put the extracte
 (If the download link is not available, please contact me.)
 ### Map of Harbin
 <!-- The map of Harbin has been implemented using [OSM](https://www.openstreetmap.org) on the cloud server. You can use the [Dbeaver](https://mirrors.nju.edu.cn/github-release/dbeaver/dbeaver/) for access and visualization of the PGSQL database.  -->
-Please use the proveided *harbin.osm.pbf* file.
+
+1. Install prerequisites.
+
+    - Docker Engine (version 1.6 or higher, see [https://docs.docker.com/installation/ubuntulinux/](https://docs.docker.com/installation/ubuntulinux/))
+    - [osmosis](https://wiki.openstreetmap.org/wiki/Osmosis/Installation)
+    - java 
+  
+2. Load Existing Docker image.
+
+    ``` bash
+    docker pull hujilin1229/barefoot_map
+    ```
+
+3. Create Docker container.
+
+    ``` bash
+    docker run -it -p 5432:5432 --name="harbin-map" -v ${PWD}/map/:/mnt/map hujilin1229/barefoot_map:latest
+    ```
+
+4. Import OSM extract (in the container).
+
+    ``` bash
+    service postgresql start
+    bash /mnt/map/osm/import.sh
+    ```
+
+    To detach the interactive shell from a running container without stopping it, use the escape sequence Ctrl-p + Ctrl-q.
+
+    If we want to attach it again, we can do
+
+    ```bash
+    docker attach <container id>
+    ```
+
+5. Make sure the container is running ("up").
+
+    ``` bash
+    docker ps -a
+    ...
+    ```
+
+We can restart the created container (if it is stopped)
+```bash
+docker start --interactive harbin-map
+service postgresql start
+```
+
 
 
 ### Map matching
