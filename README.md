@@ -20,6 +20,7 @@ Download the [dataset](https://pan.quark.cn/s/b30e6b7cd379) and put the extracte
 
 (If the download link is not available, please contact me.)
 ### Map of Harbin
+Follow the steps below for access and visualization of the PGSQL database with [Dbeaver](https://mirrors.nju.edu.cn/github-release/dbeaver/dbeaver/).
 <!-- The map of Harbin has been implemented using [OSM](https://www.openstreetmap.org) on the cloud server. You can use the [Dbeaver](https://mirrors.nju.edu.cn/github-release/dbeaver/dbeaver/) for access and visualization of the PGSQL database.  -->
 
 1. Install prerequisites.
@@ -72,7 +73,7 @@ service postgresql start
 
 ### Map matching
 
-**(Recommended) If you want to build your own mapmatching server, please following the below steps to build a mapmatching server:**
+**(Recommended) If you want to build your own mapmatching server, please follow the steps blow to build a mapmatching server:**
 
 **Requirements**:
 
