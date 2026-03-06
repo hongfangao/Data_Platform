@@ -20,7 +20,9 @@ Download the [dataset](https://pan.quark.cn/s/b30e6b7cd379) and put the extracte
 
 (If the download link is not available, please contact me.)
 ### Map of Harbin
-The map of Harbin has been implemented using [OSM](https://www.openstreetmap.org) on the cloud server. You can use the [Dbeaver](https://mirrors.nju.edu.cn/github-release/dbeaver/dbeaver/) for access and visualization of the PGSQL database. 
+<!-- The map of Harbin has been implemented using [OSM](https://www.openstreetmap.org) on the cloud server. You can use the [Dbeaver](https://mirrors.nju.edu.cn/github-release/dbeaver/dbeaver/) for access and visualization of the PGSQL database.  -->
+Please use the proveided *harbin.osm.pbf* file.
+
 
 ### Map matching
 
@@ -111,6 +113,6 @@ The 5 `.jld2` files contains the following information:
 [Open Street Map](https://www.openstreetmap.org)
 ## Notes:
 - The overall map matching process may take very long time, please be patient.
-- The cloud server IP will be provided in the class.
-- Database IP, Database Name, user and password will be provided in the class.
+<!-- - The cloud server IP will be provided in the class. -->
+<!-- - Database IP, Database Name, user and password will be provided in the class. -->
 - You may encounter connection problems if you use the provided server, as long as you can get the jld outputs, that's OK.
