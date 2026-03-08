@@ -133,7 +133,7 @@ cd Data_platform/julia
 ```
 Modify the map matching server in `trip.jl`, line `202`.
 
-- Please use `localhost`
+**Please use `localhost` as we do not provide map matching server any more.**
 
 Modify the `localhost` to the IP address of map matching server (if you are doing mapmatching with your own server, do not change the `localhost`).
 It should be
