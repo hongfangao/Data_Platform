@@ -127,13 +127,13 @@ service postgresql start
    ```bash
    java -jar target/barefoot-0.1.5-matcher-jar-with-dependencies.jar --mapmatchjson config/server.properties config/harbin.properties
    ```
-#### If you want to implement the mapmatching process with the provided server, please follow the following steps only:
+#### (Not Available Any More) If you want to implement the mapmatching process with the provided server, please follow the following steps only:
 ```bash
 cd Data_platform/julia
 ```
 Modify the map matching server in `trip.jl`, line `202`.
 
-Modify the `localhost` to the IP address of map matching server (if you are doing mapmatching with your own server, do not channel the `localhost`).
+Modify the `localhost` to the IP address of map matching server (if you are doing mapmatching with your own server, do not change the `localhost`).
 It should be
 ```julia
 clientside = connect("IP_address", 1234)
