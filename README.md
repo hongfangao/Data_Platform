@@ -164,3 +164,4 @@ The 5 `.jld2` files contains the following information:
 <!-- - The cloud server IP will be provided in the class. -->
 <!-- - Database IP, Database Name, user and password will be provided in the class. -->
 - You may encounter connection problems if you use the provided server, as long as you can get the jld outputs, that's OK.
+- **If encountering any problems while map matching and building matching server, feel free to contact me via wechat or github issues.**
