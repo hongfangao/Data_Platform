@@ -122,6 +122,7 @@ service postgresql start
    ```bash
    mvn package --DskipTests
    ```
+   **NOTE: We test the overall process under MacOS, for Windows users, the command may be different.**
 10. Start server with standard configuration for map server and map matching, and option for 'slimjson' output format.
    ```bash
    java -jar target/barefoot-0.1.5-matcher-jar-with-dependencies.jar --mapmatchjson config/server.properties config/harbin.properties
