@@ -23,7 +23,7 @@ Download the [dataset](https://pan.quark.cn/s/b30e6b7cd379) and put the extracte
 Follow the steps below for access and visualization of the PGSQL database with [Dbeaver](https://mirrors.nju.edu.cn/github-release/dbeaver/dbeaver/).
 <!-- The map of Harbin has been implemented using [OSM](https://www.openstreetmap.org) on the cloud server. You can use the [Dbeaver](https://mirrors.nju.edu.cn/github-release/dbeaver/dbeaver/) for access and visualization of the PGSQL database.  -->
 
-1. Install prerequisites.
+1. Install prerequisites (Inside Docker).
 
     - Docker Engine (version 1.6 or higher, see [https://docs.docker.com/installation/ubuntulinux/](https://docs.docker.com/installation/ubuntulinux/))
     - [osmosis](https://wiki.openstreetmap.org/wiki/Osmosis/Installation)
@@ -32,6 +32,8 @@ Follow the steps below for access and visualization of the PGSQL database with [
 2. Load Existing Docker image.
 
     ``` bash
+    git clone git@github.com:hujilin1229/barefoot.git
+    cd barefoot
     docker pull hujilin1229/barefoot_map
     ```
 
