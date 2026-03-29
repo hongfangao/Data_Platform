@@ -19,18 +19,22 @@ mkdir -p data/h5path data/jldpath
 Download the [dataset](https://pan.quark.cn/s/b30e6b7cd379) and put the extracted *.h5 files into `Data_Platform/data/h5path.`
 
 (If the download link is not available, please contact me.)
-### Map of Harbin
-Follow the steps below for access and visualization of the PGSQL database with [Dbeaver](https://mirrors.nju.edu.cn/github-release/dbeaver/dbeaver/).
+
+### Docker Preparation
+Follow the steps below to build the docker for map matching sever.
+
+<!-- Follow the steps below for access and visualization of the PGSQL database with [Dbeaver](https://mirrors.nju.edu.cn/github-release/dbeaver/dbeaver/). -->
 <!-- The map of Harbin has been implemented using [OSM](https://www.openstreetmap.org) on the cloud server. You can use the [Dbeaver](https://mirrors.nju.edu.cn/github-release/dbeaver/dbeaver/) for access and visualization of the PGSQL database.  -->
 
-1. Install prerequisites (Inside Docker).
+<!-- 1. Install prerequisites (Inside Docker).
 
     - Docker Engine (version 1.6 or higher, see [https://docs.docker.com/installation/ubuntulinux/](https://docs.docker.com/installation/ubuntulinux/))
     - [osmosis](https://wiki.openstreetmap.org/wiki/Osmosis/Installation)
-    - java 
+    - java  -->
   
-2. Load Existing Docker image.
-
+1. Docker Preparation.
+   
+   **For MacOS Arm Users**
     ``` bash
     git clone git@github.com:hujilin1229/barefoot.git
     cd barefoot
@@ -52,12 +56,13 @@ Follow the steps below for access and visualization of the PGSQL database with [
     docker run -it -p 5432:5432 --name="harbin-map" -v ${PWD}/map/:/mnt/map hujilin1229/barefoot_map:latest
     ``` -->
 
-3. Import OSM extract (in the container).
-
+3. Start postgres
+   
+   **Comment line 21 in ../barefoot_map/map/Dockerfile**
     ``` bash
     service postgresql start
-    bash /mnt/map/osm/import.sh
     ```
+   <!-- bash /mnt/map/osm/import.sh -->
 
     To detach the interactive shell from a running container without stopping it, use the escape sequence Ctrl-p + Ctrl-q.
 
@@ -79,7 +84,9 @@ We can restart the created container (if it is stopped)
 docker start --interactive harbin-map
 service postgresql start
 ```
+### Map of Harbin
 
+Import the map of harbin using the ``harbin_map.sql`` in this repo, with encoding = ``UTF-8``.
 
 
 ### Map matching
@@ -94,7 +101,7 @@ service postgresql start
 - maven (`apt-get install maven`)
 
 **Steps**:
-1. download the barefoot repo and upload the map file
+<!-- 1. download the barefoot repo and upload the map file
    ```bash
    git clone https://github.com/boathit/barefoot.git
    cd barefoot/map/osm
@@ -127,14 +134,14 @@ service postgresql start
    ```bash
    bash /mnt/map/osm/import.sh
    ```    
-   To detach the interactive shell from a running container without stopping it, use the escape sequence `Ctrl-p` + `Ctrl-q`, to attach it again use `docker attach harbin-map`.
-9. In the barefoot_map directory:
+   To detach the interactive shell from a running container without stopping it, use the escape sequence `Ctrl-p` + `Ctrl-q`, to attach it again use `docker attach harbin-map`. -->
+1. In the barefoot_map directory:
    Package Barefoot JAR. (Includes dependencies and executable main class.)
    ```bash
    mvn package --DskipTests
    ```
    **NOTE: We test the overall process under MacOS, for Windows users, the command may be different.**
-10. Start server with standard configuration for map server and map matching, and option for 'slimjson' output format.
+2. Start server with standard configuration for map server and map matching, and option for 'slimjson' output format.
    ```bash
    java -jar target/barefoot-0.1.5-matcher-jar-with-dependencies.jar --mapmatchjson config/server.properties config/harbin.properties
    ```
