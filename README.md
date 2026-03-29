@@ -37,6 +37,15 @@ Follow the steps below for access and visualization of the PGSQL database with [
     docker pull hujilin1229/barefoot_map
     ```
 
+   **NOTE: FOR windows users, please build your own docker instead with the following command:**
+   ```bash
+   git clone https://github.com/hujilin1229/barefoot.git
+   cd barefoot/map/osm/
+   osmosis --read-pbf harbim.osm.pbf
+   cd barefoot
+   docker build -t imap ./map
+   ```
+
 3. Create Docker container.
 
     ``` bash
