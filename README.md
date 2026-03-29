@@ -35,6 +35,7 @@ Follow the steps below for access and visualization of the PGSQL database with [
     git clone git@github.com:hujilin1229/barefoot.git
     cd barefoot
     docker pull hujilin1229/barefoot_map
+    docker run -it -p 5432:5432 --name="harbin-map" -v ${PWD}/map/:/mnt/map hujilin1229/barefoot_map:latest
     ```
 
    **NOTE: FOR windows users, please build your own docker instead with the following command:**
@@ -44,15 +45,16 @@ Follow the steps below for access and visualization of the PGSQL database with [
    osmosis --read-pbf harbim.osm.pbf
    cd barefoot
    docker build -t imap ./map
+   docker run -it -p 5432:5432 --name="harbin-map" -v ${PWD}/map/:/mnt/map imap
    ```
 
-3. Create Docker container.
+<!-- 3. Create Docker container.
 
     ``` bash
     docker run -it -p 5432:5432 --name="harbin-map" -v ${PWD}/map/:/mnt/map hujilin1229/barefoot_map:latest
-    ```
+    ``` -->
 
-4. Import OSM extract (in the container).
+3. Import OSM extract (in the container).
 
     ``` bash
     service postgresql start
@@ -67,7 +69,7 @@ Follow the steps below for access and visualization of the PGSQL database with [
     docker attach <container id>
     ```
 
-5. Make sure the container is running ("up").
+4. Make sure the container is running ("up").
 
     ``` bash
     docker ps -a
