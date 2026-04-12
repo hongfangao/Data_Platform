@@ -56,7 +56,7 @@ Download the [dataset](https://pan.quark.cn/s/b30e6b7cd379) and put the extracte
    #### Method2: Pull from existing image
    1. Pull docker and run container
    
-      **For x86/amd64 Users**:
+      **For x86/amd64 Users:**
       ```bash
       git clone git@github.com:hujilin1229/barefoot.git
       cd barefoot
@@ -64,7 +64,7 @@ Download the [dataset](https://pan.quark.cn/s/b30e6b7cd379) and put the extracte
       docker run -it -p 5432:5432 --name="harbin-map" -v ${PWD}/map/:/mnt/map garygb/barefoot_map:latest
       ```
    
-      **For MacOS Arm Users**   
+      **For MacOS Arm Users:**   
       ```bash 
       git clone git@github.com:hujilin1229/barefoot.git
       cd barefoot
