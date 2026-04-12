@@ -20,8 +20,7 @@ Download the [dataset](https://pan.quark.cn/s/b30e6b7cd379) and put the extracte
 
 (If the download link is not available, please contact me.)
 
-### Docker Preparation
-Follow the steps below to build the docker for map matching sever.
+### Map Database
 
 <!-- Follow the steps below for access and visualization of the PGSQL database with [Dbeaver](https://mirrors.nju.edu.cn/github-release/dbeaver/dbeaver/). -->
 <!-- The map of Harbin has been implemented using [OSM](https://www.openstreetmap.org) on the cloud server. You can use the [Dbeaver](https://mirrors.nju.edu.cn/github-release/dbeaver/dbeaver/) for access and visualization of the PGSQL database.  -->
@@ -32,37 +31,76 @@ Follow the steps below to build the docker for map matching sever.
     - [osmosis](https://wiki.openstreetmap.org/wiki/Osmosis/Installation)
     - java  -->
   
-1. Docker Preparation.
    
-   **For MacOS Arm Users**
-    ``` bash
-    git clone git@github.com:hujilin1229/barefoot.git
-    cd barefoot
-    docker pull hujilin1229/barefoot_map
-    docker run -it -p 5432:5432 --name="harbin-map" -v ${PWD}/map/:/mnt/map hujilin1229/barefoot_map:latest
-    ```
+   You can choose one for the docker image.
+   #### Method1: Build your own docker
+   - Install prerequisites.
+     - Docker Engine (version 1.6 or higher, see https://docs.docker.com/installation/ubuntulinux/)
+     - java
+   - Download the map data and extract the city data
+      ```bash
+      git clone https://github.com/hujilin1229/barefoot.git
+      cd barefoot
+      ```
+   - Pull any Postgres+Postgis image
+      ```bash
+      docker pull docker.io/kartoza/postgis:18-3.6--v2026.03.24
+      docker run -it --name harbin_map --restart=always -e POSTGRES_USER=osmuser -e POSTGRES_PASSWORD=pass -p 5432:5432 -v ${PWD}/map/:/mnt/map  -d kartoza/postgis:18-3.6--v2026.03.24
+      ```
+   - Import OSM Data (in the container).
+     ```bash
+     service postgresql start
+     su - postgres -c "psql harbin"
+     su - postgres -c "psql -d harbin -U postgres -f /mnt/map/backup.sql"
+     ```
+   #### Method2: Pull from existing image
+   1. Pull docker and run container
+     **For x86/amd64 Users**
+      ```bash
+      git clone git@github.com:hujilin1229/barefoot.git
+      cd barefoot
+      docker pull garygb/barefoot_map
+      docker run -it -p 5432:5432 --name="harbin-map" -v ${PWD}/map/:/mnt/map garygb/barefoot_map:latest
+      ```
 
-   **NOTE: FOR windows users, please build your own docker instead with the following command:**
-   ```bash
-   git clone https://github.com/hujilin1229/barefoot.git
-   cd barefoot
-   docker build -t imap ./map
-   docker run -it -p 5432:5432 --name="harbin-map" -v ${PWD}/map/:/mnt/map imap
-   ```
+   
+      **For MacOS Arm Users**   
+      ```bash 
+      git clone git@github.com:hujilin1229/barefoot.git
+      cd barefoot
+      docker pull hujilin1229/barefoot_map
+      docker run -it -p 5432:5432 --name="harbin-map" -v ${PWD}/map/:/mnt/map hujilin1229/barefoot_map:latest
+      ```
+
 
 <!-- 3. Create Docker container.
 
     ``` bash
     docker run -it -p 5432:5432 --name="harbin-map" -v ${PWD}/map/:/mnt/map hujilin1229/barefoot_map:latest
     ``` -->
+   2. To detach the interactive shell from a running container without stopping it, use the escape sequence Ctrl-p + Ctrl-q.
+   If we want to attach it again, we can do:
+      ```bash
+      docker attach <container id>
+      ```
 
-3. Start postgres
-   
-   **Comment line 21 in ../barefoot_map/map/Dockerfile**
-    ``` bash
-    service postgresql start
-    ```
-   <!-- bash /mnt/map/osm/import.sh -->
+   3. Make sure the container is running ("up").
+      ```bash
+      docker ps -a
+      ...
+      ```
+
+   4. We can restart the created container (if it is stopped)
+      ```bash
+      docker start --interactive harbin-map
+      service postgresql start
+      ```
+      
+   <!-- **Comment line 21 in ../barefoot_map/map/Dockerfile**
+   ``` bash
+   service postgresql start
+   ``` -->
+   <!-- bash /mnt/map/osm/import.sh
 
     To detach the interactive shell from a running container without stopping it, use the escape sequence Ctrl-p + Ctrl-q.
 
@@ -70,23 +108,19 @@ Follow the steps below to build the docker for map matching sever.
 
     ```bash
     docker attach <container id>
-    ```
+    ``` -->
 
-4. Make sure the container is running ("up").
+<!-- 1. Make sure the container is running ("up").
 
     ``` bash
     docker ps -a
     ...
-    ```
+    ``` -->
 
-We can restart the created container (if it is stopped)
-```bash
-docker start --interactive harbin-map
-service postgresql start
-```
-### Map of Harbin
 
-Import the map of harbin using the ``harbin_map.sql`` in this repo, with encoding = ``UTF-8``.
+<!-- ### Map of Harbin
+
+Import the map of harbin using the ``harbin_map.sql`` in this repo, with encoding = ``UTF-8``. -->
 
 
 ### Map matching
@@ -145,33 +179,39 @@ Import the map of harbin using the ``harbin_map.sql`` in this repo, with encodin
    ```bash
    java -jar target/barefoot-0.1.5-matcher-jar-with-dependencies.jar --mapmatchjson config/server.properties config/harbin.properties
    ```
-#### (Not Available Any More) If you want to implement the mapmatching process with the provided server, please follow the following steps only:
-```bash
-cd Data_platform/julia
-```
-Modify the map matching server in `trip.jl`, line `202`.
+   Note: In case of 'parse errors', use the following Java options: 
+   ```-Duser.language=en -Duser.country=US```
 
-**Please use `localhost` as we do not provide map matching server any more.**
 
-Modify the `localhost` to the IP address of map matching server (if you are doing mapmatching with your own server, do not change the `localhost`).
-It should be
-```julia
-clientside = connect("IP_address", 1234)
-```
-Then execute the following commands:
-```bash
-julia -p 1 mapmatch.jl --inputpath ../data/h5path --outputpath ../data/jldpath
-```
-where `1` is the number of cpu cores available in your machine. The map matching results are stored in `Data_Platform/data/jldpath`.
+<!-- #### (Not Available Any More) If you want to implement the mapmatching process with the provided server, please follow the following steps only: -->
+3. Start map matching
 
-Once the map matching process is finished, you should get 5 `jld2` files.
-(`trips_150103.jld2` to `trips_150107.jld2`).
+   ```bash
+   cd Data_platform/julia
+   ```
+   Modify the map matching server in `trip.jl`, line `202`.
 
-The 5 `.jld2` files contains the following information:
+   **Please use `localhost` as we do not provide map matching server any more.**
 
-- input roads and points
-- mapping results of input points
-- additional points during mapmatching and additional information (road fractions, geo location, direction)
+   Modify the `localhost` to the IP address of map matching server (if you are doing mapmatching with your own server, do not change the `localhost`).
+   It should be
+   ```julia
+   clientside = connect("IP_address", 1234)
+   ```
+   Then execute the following commands:
+   ```bash
+   julia -p 1 mapmatch.jl --inputpath ../data/h5path --outputpath ../data/jldpath
+   ```
+   where `1` is the number of cpu cores available in your machine. The map matching results are stored in `Data_Platform/data/jldpath`.
+
+   Once the map matching process is finished, you should get 5 `jld2` files.
+   (`trips_150103.jld2` to `trips_150107.jld2`).
+
+   The 5 `.jld2` files contains the following information:
+
+   - input roads and points
+   - mapping results of input points
+   - additional points during mapmatching and additional information (road fractions, geo location, direction)
 
 ## References:
 [Learning Travel Time Distributions with Deep Generative Model](http://www.ntu.edu.sg/home/lixiucheng/pdfs/www19-deepgtt.pdf) (**WWW-19**)
