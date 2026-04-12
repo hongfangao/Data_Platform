@@ -177,12 +177,12 @@ Assume you have already prepared the docker in aforementioned steps, all the ste
    mvn package --DskipTests
    ```
    **NOTE: We test the overall process under MacOS, for Windows users, the command may be different.**
-2. Start server with standard configuration for map server and map matching, and option for 'slimjson' output format.
+2. Start server with standard configuration for map server and map matching, and option for 'mapmatchjson' output format.
    ```bash
    java -jar target/barefoot-0.1.5-matcher-jar-with-dependencies.jar --mapmatchjson config/server.properties config/harbin.properties
    ```
    Note: In case of 'parse errors', use the following Java options: 
-   ```-Duser.language=en -Duser.country=US```
+   ```-Duser.language=en -Duser.country=US``` and the format **MUST** be 'mapmatchjson' or there'll be information loss.
 
 
 <!-- #### (Not Available Any More) If you want to implement the mapmatching process with the provided server, please follow the following steps only: -->
