@@ -56,7 +56,7 @@ Download the [dataset](https://pan.quark.cn/s/b30e6b7cd379) and put the extracte
    #### Method2: Pull from existing image
    1. Pull docker and run container
    
-      **For x86/amd64 Users:**
+      **For x86/amd64 Users**
       ```bash
       git clone git@github.com:hujilin1229/barefoot.git
       cd barefoot
@@ -135,6 +135,8 @@ Import the map of harbin using the ``harbin_map.sql`` in this repo, with encodin
 - maven (`apt-get install maven`)
 
 **Steps**:
+
+Assume you have already prepared the docker in aforementioned steps, all the steps are executed inside docker.
 <!-- 1. download the barefoot repo and upload the map file
    ```bash
    git clone https://github.com/boathit/barefoot.git
@@ -187,6 +189,7 @@ Import the map of harbin using the ``harbin_map.sql`` in this repo, with encodin
 3. Start map matching
 
    ```bash
+   git clone https://github.com/hongfangao/Data_Platform.git
    cd Data_platform/julia
    ```
    Modify the map matching server in `trip.jl`, line `202`.
